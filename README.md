@@ -23,24 +23,26 @@ A clean, responsive landing page with a lead capture form built with Angular and
    ```
 
 3. **Set up Environment Variables**:
-   Create a `.env` file or set the following in your environment:
-   - `POSTGRES_URL`: Connection string for Vercel Postgres.
-   - `GOOGLE_MAPS_API_KEY`: Your Google Maps API key (with Places API enabled).
+   Create a `.env` file with:
+   - `POSTGRES_URL`: Your Vercel Postgres connection string.
+   - `GOOGLE_MAPS_API_KEY`: Your Google Maps API key.
 
-4. **Update Google Maps API Key**:
-   Replace `YOUR_GOOGLE_MAPS_API_KEY` in `src/app/components/landing-page/landing-page.component.ts` with your actual key.
-
-5. **Start the development server**:
-   ```bash
-   npm start
-   ```
-   Open `http://localhost:4200` in your browser.
-
-6. **Backend Simulation**:
-   Vercel functions can be tested locally using the Vercel CLI:
+4. **Start the development server**:
+   For the best experience (including the backend api), run:
    ```bash
    vercel dev
    ```
+   This will start both the Angular frontend and the Vercel serverless functions on `http://localhost:3000`.
+
+   *Alternatively, if you only want to work on the UI:*
+   ```bash
+   npm start
+   ```
+   *Note: Using `npm start` without `vercel dev` will result in `ECONNREFUSED` when submitting the form.*
+
+## Troubleshooting `ECONNREFUSED`
+
+If you see an `ECONNREFUSED` error when submitting the form, it means the Angular dev server cannot find the backend. Ensure you are running `vercel dev` which handles the API routing.
 
 ## Design Decisions & Trade-offs
 
