@@ -1,8 +1,6 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
-import { pool } from './_db';
+const { pool } = require('./_db');
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS headers
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -17,11 +15,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       success: true,
       data: result.rows,
     });
-  } catch (err: any) {
+  } catch (err) {
     console.error('Postgres error:', err);
     return res.status(500).json({
       success: false,
       error: err.message || 'Internal Server Error',
     });
   }
-}
+};

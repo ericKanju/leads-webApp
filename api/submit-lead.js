@@ -1,11 +1,6 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
+const { pool } = require('./_db');
 
-
-import { pool } from './_db';
-
-module.exports = async function handler(req: VercelRequest, res: VercelResponse) {
-
-  // CORS headers
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -25,7 +20,6 @@ module.exports = async function handler(req: VercelRequest, res: VercelResponse)
       return res.status(400).json({ success: false, error: 'Invalid email format' });
     }
 
-    // Ensure table exists (creates only once)
     await pool.query(`
       CREATE TABLE IF NOT EXISTS leads (
         id SERIAL PRIMARY KEY,
@@ -38,7 +32,6 @@ module.exports = async function handler(req: VercelRequest, res: VercelResponse)
       );
     `);
 
-    // Insert lead
     const result = await pool.query(
       `INSERT INTO leads (first_name, last_name, email, phone, property_address)
        VALUES ($1, $2, $3, $4, $5) RETURNING *`,
@@ -51,11 +44,11 @@ module.exports = async function handler(req: VercelRequest, res: VercelResponse)
       data: result.rows,
     });
 
-  } catch (err: any) {
+  } catch (err) {
     console.error('Postgres error:', err);
     return res.status(500).json({
       success: false,
       error: err.message || 'Internal Server Error',
     });
   }
-}
+};
