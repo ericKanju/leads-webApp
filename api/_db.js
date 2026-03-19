@@ -11,8 +11,17 @@
 
 const { Pool } = require('pg');
 
+// Vercel and Supabase Postgres URLs often include ?sslmode=require etc.
+// The `pg` library has a known quirk where query params from the connection 
+// string can overwrite the `ssl` object we provide in the constructor.
+let connectionString = process.env.leadsDb_POSTGRES_URL || process.env.POSTGRES_URL;
+
+if (connectionString && connectionString.includes('?')) {
+  connectionString = connectionString.split('?')[0]; // Strip query params to avoid overriding ssl config
+}
+
 const pool = new Pool({
-  connectionString: process.env.leadsDb_POSTGRES_URL,
+  connectionString: connectionString,
   ssl: { rejectUnauthorized: false }
 });
 
