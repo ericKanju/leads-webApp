@@ -1,19 +1,10 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 
 
-import pkg from 'pg';
-const { Pool } = pkg;
-
-// Create a pool (reuse across invocations for performance)
-const pool = new Pool({
-  connectionString: process.env['POSTGRES_URL'],
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+import { pool } from './_db';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  console.log("DB URL:", process.env['POSTGRES_URL']);
+
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -57,7 +48,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({
       success: true,
       message: 'Lead stored successfully',
-      data: result.rows[0],
+      data: result.rows,
     });
 
   } catch (err: any) {
