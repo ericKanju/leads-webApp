@@ -3,7 +3,7 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 
 import { pool } from './_db';
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = async function handler(req: VercelRequest, res: VercelResponse) {
 
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
