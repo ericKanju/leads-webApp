@@ -11,7 +11,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600">Trovex.ai</span>
+          <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600">Leads capture</span>
         </div>
       </nav>
 
@@ -20,10 +20,10 @@
         <!-- Left Content -->
         <div class="space-y-8 animate-fade-in-up">
           <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight tracking-tight text-slate-900">
-            Train and sell better with <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600">Trovex AI</span>
+            Discover your property's true value with <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600">Expert Valuations</span>
           </h1>
           <p class="text-xl text-slate-600 max-w-lg leading-relaxed">
-            Interactive AI Roleplays for your team. Leave your info and we'll be in touch shortly.
+            Get a comprehensive market analysis for your property. Leave your details and our local experts will be in touch shortly.
           </p>
 
           <ul class="space-y-6">
@@ -34,8 +34,8 @@
                 </svg>
               </div>
               <div>
-                <h3 class="font-bold text-lg text-slate-800">Customized around your methodology</h3>
-                <p class="text-slate-500">Create roleplays around your talking points, training methodology, and customer ICP.</p>
+                <h3 class="font-bold text-lg text-slate-800">Accurate Market Insights</h3>
+                <p class="text-slate-500">Receive an in-depth analysis of recent sales and market trends specific to your neighborhood.</p>
               </div>
             </li>
             <li class="flex items-start space-x-4 group">
@@ -45,8 +45,8 @@
                 </svg>
               </div>
               <div>
-                <h3 class="font-bold text-lg text-slate-800">Meet learners where they are</h3>
-                <p class="text-slate-500">Fits into your existing LMS, CMS or training portal. Seamless for admins and learners.</p>
+                <h3 class="font-bold text-lg text-slate-800">Local Expertise</h3>
+                <p class="text-slate-500">Benefit from the knowledge of experienced professionals who understand the nuances of your local market.</p>
               </div>
             </li>
             <li class="flex items-start space-x-4 group">
@@ -56,8 +56,8 @@
                 </svg>
               </div>
               <div>
-                <h3 class="font-bold text-lg text-slate-800">Your InfoSec team will thank you</h3>
-                <p class="text-slate-500">SOC 2 Type 2, GDPR compliant. Data excluded from AI training models.</p>
+                <h3 class="font-bold text-lg text-slate-800">No Obligation Consultation</h3>
+                <p class="text-slate-500">Your information is confidential and sharing it comes with zero pressure or commitment.</p>
               </div>
             </li>
           </ul>
@@ -66,7 +66,7 @@
         <!-- Right Form Card -->
         <div class="animate-fade-in-up delay-200">
           <div class="bg-white/80 backdrop-blur-xl p-8 lg:p-12 rounded-[2rem] shadow-2xl shadow-purple-200/50 border border-white">
-            <h2 class="text-3xl font-bold mb-8 text-slate-900 text-center lg:text-left">See <span class="text-purple-600">Trovex AI</span> in Action</h2>
+            <h2 class="text-3xl font-bold mb-8 text-slate-900 text-center lg:text-left">Capture <span class="text-purple-600">Leads</span> Info</h2>
             <form [formGroup]="leadForm" (ngSubmit)="onSubmit()" class="space-y-6">
               <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
@@ -105,7 +105,7 @@
                 class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-5 rounded-2xl shadow-lg shadow-purple-200 transition-all transform hover:-translate-y-1 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group">
                 <span class="flex items-center justify-center space-x-2">
                   <span *ngIf="isSubmitting" class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>
-                  <span>{{ isSubmitting ? 'Sending Request...' : 'Schedule My Personalised Demo' }}</span>
+                  <span>{{ isSubmitting ? 'Sending Request...' : 'Submit Lead' }}</span>
                 </span>
               </button>
               
