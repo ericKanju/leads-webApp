@@ -1,58 +1,70 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 
-// Mock database (replace with your real DB later)
-const leadsDB: any[] = [];
+
+import pkg from 'pg';
+const { Pool } = pkg;
+
+// Create a pool (reuse across invocations for performance)
+const pool = new Pool({
+  connectionString: process.env['POSTGRES_URL'],
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  console.log("DB URL:", process.env['POSTGRES_URL']);
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method Not Allowed' });
+
   try {
-    console.log("🔥 Lead API called");
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const { firstName, lastName, email, phone, propertyAddress } = body || {};
 
-    // Only allow POST requests
-    if (req.method !== 'POST') {
-      return res.status(405).json({
-        success: false,
-        error: 'Method not allowed. Use POST.'
-      });
+    if (!firstName || !lastName || !email || !phone || !propertyAddress) {
+      return res.status(400).json({ success: false, error: 'Missing required fields' });
     }
 
-    // Get data from request body
-    const { firstName, lastName, email, phone, address } = req.body;
-
-    // Basic validation
-    if (!firstName || !email || !phone) {
-      return res.status(400).json({
-        success: false,
-        error: 'Missing required fields: firstName, email, or phone'
-      });
+    if (!email.includes('@')) {
+      return res.status(400).json({ success: false, error: 'Invalid email format' });
     }
 
-    // Create new lead object
-    const newLead = {
-      id: leadsDB.length + 1,
-      firstName,
-      lastName: lastName || '',
-      email,
-      phone,
-      address: address || '',
-      createdAt: new Date().toISOString(),
-    };
+    // Ensure table exists (creates only once)
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS leads (
+        id SERIAL PRIMARY KEY,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(255) NOT NULL,
+        property_address TEXT NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      );
+    `);
 
-    // Save to "DB"
-    leadsDB.push(newLead);
-    console.log("💾 Lead saved:", newLead);
+    // Insert lead
+    const result = await pool.query(
+      `INSERT INTO leads (first_name, last_name, email, phone, property_address)
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [firstName, lastName, email, phone, propertyAddress]
+    );
 
-    // Return success response
     return res.status(200).json({
       success: true,
-      message: 'Lead saved successfully!',
-      data: newLead
+      message: 'Lead stored successfully',
+      data: result.rows[0],
     });
 
-  } catch (err) {
-    console.error("❌ Crash:", err);
+  } catch (err: any) {
+    console.error('Postgres error:', err);
     return res.status(500).json({
       success: false,
-      error: err instanceof Error ? err.message : 'An unknown error occurred'
+      error: err.message || 'Internal Server Error',
     });
   }
 }
