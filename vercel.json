@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "ng build && tsc -p tsconfig.api.json",
+  "outputDirectory": "dist/leads-webapp/browser",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
